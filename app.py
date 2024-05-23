@@ -30,10 +30,7 @@ Ktrain, Ktest, Ztrain, Ztest = train_test_split(K, Z, test_size=0.33, random_sta
 model = MultinomialNB()
 model.fit(Ktrain, Ztrain)
 
-# # Display Training and Test Scores
-# st.write("Train Score:", model.score(Ktrain, Ztrain))
-# st.write("Test Score:", model.score(Ktest, Ztest))
-
+# Function to visualize word clouds
 def visualize(label):
     words = ''
     for msg in df[df['labels'] == label]['data']:
@@ -45,20 +42,16 @@ def visualize(label):
     plt.axis('off')
     st.pyplot(plt)
 
-# # Visualization
-# st.write("Spam Word Cloud")
-# visualize('spam')
-# st.write("Ham Word Cloud")
-# visualize('ham')
-
 # User input for spam classification
 st.write("### Check your own message")
 user_message = st.text_input("Enter a message to check if it is spam or not:")
+predict_button = st.button("Predict")
 
-if user_message:
-    user_message_vectorized = GP_vectorize_count.transform([user_message])
-    prediction = model.predict(user_message_vectorized)[0]
-    if prediction == 1:
-        st.write("The message is classified as **Spam**.")
-    else:
-        st.write("The message is classified as **Ham**.")
+if predict_button:
+    if user_message:
+        user_message_vectorized = GP_vectorize_count.transform([user_message])
+        prediction = model.predict(user_message_vectorized)[0]
+        if prediction == 1:
+            st.write("The message is classified as **Spam**.")
+        else:
+            st.write("The message is classified as **Ham**.")
